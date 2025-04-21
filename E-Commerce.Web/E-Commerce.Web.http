@@ -1,0 +1,12 @@
+@E_Commerce.Web_HostAddress = http://localhost:5299
+
+GET {{E_Commerce.Web_HostAddress}}/api/weatherforecast/
+Accept: application/json
+
+### Get products
+GET {{E_Commerce.Web_HostAddress}}/api/Products/
+
+### Get product by id
+@id =10
+GET {{E_Commerce.Web_HostAddress}}/api/Products/{{id}}
+
