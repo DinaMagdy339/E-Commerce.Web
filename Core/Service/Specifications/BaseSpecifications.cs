@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Service.Spceifications
+namespace Service.Specifications
 {
     abstract class BaseSpecifications<TEntity, TKey> : ISpecifications<TEntity , TKey> where TEntity : BaseEntity<TKey>
     {
