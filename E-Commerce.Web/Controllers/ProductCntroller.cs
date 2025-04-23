@@ -7,14 +7,13 @@ namespace E_Commerce.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductCntroller(IServiceManager ServiceManager) : ControllerBase
+    public class ProductCntroller(IServiceManager _ServiceManager) : ControllerBase
     {
-        private readonly IServiceManager _ServiceManager = ServiceManager;
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDTo>>> GetAllProducts()
+        public async Task<ActionResult<IEnumerable<ProductDTo>>> GetAllProducts(int? BrandId, int? TypeId)
         {
-            var products = await _ServiceManager.ProductService.GetAllProductsAsync();
+            var products = await _ServiceManager.ProductService.GetAllProductsAsync(BrandId, TypeId);
             return Ok(products);
         }
 
