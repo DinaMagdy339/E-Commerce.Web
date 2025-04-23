@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ServiceAbstraction;
+using Shared;
 using Shared.DataTransferObjects;
 
 namespace E_Commerce.Web.Controllers
@@ -11,9 +11,9 @@ namespace E_Commerce.Web.Controllers
     {
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDTo>>> GetAllProducts(int? BrandId, int? TypeId)
+        public async Task<ActionResult<IEnumerable<ProductDTo>>> GetAllProducts(int? BrandId, int? TypeId , ProductSortingOptions sortingOptions)
         {
-            var products = await _ServiceManager.ProductService.GetAllProductsAsync(BrandId, TypeId);
+            var products = await _ServiceManager.ProductService.GetAllProductsAsync(BrandId, TypeId ,sortingOptions);
             return Ok(products);
         }
 

@@ -6,6 +6,7 @@ using Shared.DataTransferObjects;
 using Service.Specifications;
 
 using System;
+using Shared;
 namespace Service
 {
     public class ProductService(IUnitOfWork _unitOfWork , IMapper _mapper) : IProductService
@@ -19,9 +20,9 @@ namespace Service
             return BrandsDto;
         }
 
-        public async Task<IEnumerable<ProductDTo>> GetAllProductsAsync(int? BrandId,int? TypeId)
+        public async Task<IEnumerable<ProductDTo>> GetAllProductsAsync(int? BrandId,int? TypeId , ProductSortingOptions sortingOption)
         {
-            var Specification = new ProductWithBrandAndTypeSpecification(BrandId,TypeId);
+            var Specification = new ProductWithBrandAndTypeSpecification(BrandId,TypeId,sortingOption);
             var Products = await _unitOfWork.GetRepository<Product, int>().GetAllAsync(Specification);
             return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTo>>(Products);
 

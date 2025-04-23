@@ -20,6 +20,14 @@ namespace Persistence
             {
                 Query = Query.Where(sapcification.Criteria);
             }
+            if(sapcification.OrderBy is not null)
+            {
+                Query = Query.OrderBy(sapcification.OrderBy);
+            }
+            if (sapcification.OrderByDescending is not null)
+            {
+                Query = Query.OrderByDescending(sapcification.OrderByDescending);
+            }
             if (sapcification.IncludeExpressions is not null && sapcification.IncludeExpressions.Count > 0)
             {
                 Query = sapcification.IncludeExpressions.Aggregate(Query, (currentQuery, includeExp) => currentQuery.Include(includeExp));
