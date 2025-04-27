@@ -22,11 +22,14 @@ namespace Service
 
         public async Task<PaginatedResult<ProductDTo>> GetAllProductsAsync(ProductQueryParams queryParams)
         {
+            var Repo = _unitOfWork.GetRepository<Product, int>();
             var Specification = new ProductWithBrandAndTypeSpecification(queryParams);
-            var AllProducts = await _unitOfWork.GetRepository<Product, int>().GetAllAsync(Specification);
+            var AllProducts = await Repo.GetAllAsync(Specification);
             var Data = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDTo>>(AllProducts);
             var ProductCount = AllProducts.Count();
-            return new PaginatedResult<ProductDTo>(queryParams.PageIndex, ProductCount,0,Data);
+            var CountSpec = new ProductWithBrandAndTypeSpecification(queryParams);
+            var TotalCount = await Repo.CountAsync(CountSpec);
+            return new PaginatedResult<ProductDTo>(queryParams.PageIndex, ProductCount,TotalCount,Data);
 
         }
 

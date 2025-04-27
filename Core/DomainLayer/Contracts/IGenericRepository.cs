@@ -16,7 +16,8 @@ namespace DomainLayer.Contracts
         void Remove(TEntity entity);
         #region With Specification
         Task<TEntity?> GetByIdAsync(ISpecifications<TEntity, TKey> sapcification);
-        Task<IEnumerable<TEntity>> GetAllAsync(ISpecifications<TEntity, TKey> sapcification); 
+        Task<IEnumerable<TEntity>> GetAllAsync(ISpecifications<TEntity, TKey> sapcification);
+        Task<int> CountAsync(ISpecifications<TEntity, TKey> sapcification);
         #endregion
     }
 }
