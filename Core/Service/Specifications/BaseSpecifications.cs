@@ -31,6 +31,23 @@ namespace Service.Specifications
         protected void AddOrderBy(Expression<Func<TEntity, Object>> orderByExp) => OrderBy = orderByExp;
         protected void AddOrderByDescending(Expression<Func<TEntity, Object>> orderByDescExp) => OrderByDescending = orderByDescExp;
         #endregion
+        #region Pagination
+        public int Take { get; private set; }
+
+        public int Skip { get; private set; }
+
+        public bool IsPaginated { get; set; }
+        // Total Count =40
+        // PageSize = 10
+        // PageIndex = 3
+        protected void ApplyPagination(int PageSize, int PageIndex)
+        {
+            IsPaginated = true;
+            Take = PageSize;
+            Skip = (PageIndex-1)*PageSize;
+
+        }
+        #endregion
 
 
     }

@@ -32,6 +32,10 @@ namespace Persistence
             {
                 Query = sapcification.IncludeExpressions.Aggregate(Query, (currentQuery, includeExp) => currentQuery.Include(includeExp));
             }
+            if (sapcification.IsPaginated)
+            {
+                Query = Query.Skip(sapcification.Skip).Take(sapcification.Take);
+            }
             return Query;
         }
     }
