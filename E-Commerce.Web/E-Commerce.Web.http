@@ -1,12 +1,12 @@
-@E_Commerce.Web_HostAddress = http://localhost:5299
+@E_Commerce.Web_HostAddress = http://localhost:7029
 
-GET {{E_Commerce.Web_HostAddress}}/api/weatherforecast/
+GET {{E_Commerce.Web_HostAddress}}/api/WeatherForecast/
 Accept: application/json
 
 ### Get products
-GET {{E_Commerce.Web_HostAddress}}/api/Products/
+GET {{E_Commerce.Web_HostAddress}}/api/ProductCntroller/
 
 ### Get product by id
 @id =10
-GET {{E_Commerce.Web_HostAddress}}/api/Products/{{id}}
+GET {{E_Commerce.Web_HostAddress}}/api/ProductCntroller/{{id}}
 
