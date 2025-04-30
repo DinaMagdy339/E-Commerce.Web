@@ -35,22 +35,8 @@ namespace E_Commerce.Web
             builder.Services.AddScoped<IServiceManager, ServiceManager>();
             builder.Services.Configure<ApiBehaviorOptions>(options =>
             {
-                options.InvalidModelStateResponseFactory = (Context) =>
-                {
-                    var Errors = Context.ModelState.Where(E => E.Value.Errors.Any())
-                        .Select(E => new ValidationError
-                        {
-                            Field = E.Key,
-                            Errors = E.Value.Errors.Select(E => E.ErrorMessage)
-                        }).ToArray();
-                };
-
-                builder.Services.Configure<ApiBehaviorOptions>(options =>
-                {
-                    options.InvalidModelStateResponseFactory = ApiResponseFactory.GenerateApiValidationErrorResponse;
-                });
-            });
-        
+              options.InvalidModelStateResponseFactory = ApiResponseFactory.GenerateApiValidationErrorResponse;
+            });        
             #endregion
 
             var app = builder.Build();
