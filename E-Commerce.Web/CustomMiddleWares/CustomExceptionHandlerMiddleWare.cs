@@ -23,31 +23,46 @@ namespace E_Commerce.Web.CustomMiddleWares
             try
             {
                 await _next.Invoke(httpContext);
+                await HandleNotFoundEndpoint(httpContext);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Something Went Wrong");
-                // Set Status Code for the response
-                //httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                httpContext.Response.StatusCode = ex switch
-                {
-                    NotFoundException => StatusCodes.Status404NotFound,
-                    _ => StatusCodes.Status500InternalServerError
-                };
-                // set the response content type
-                httpContext.Response.ContentType = "application/json";
-                // response object
+                await HandleExceptionAsync(httpContext, ex);
+            }
+        }
+
+        private static async Task HandleNotFoundEndpoint(HttpContext httpContext)
+        {
+            if (httpContext.Response.StatusCode == StatusCodes.Status404NotFound)
+            {
                 var Response = new ErrorToReturn
                 {
-                    StatusCode = httpContext.Response.StatusCode,
-                    ErrorMessage = ex.Message
+                    StatusCode = StatusCodes.Status404NotFound,
+                    ErrorMessage = $"End Point{httpContext.Request.Path}is Not Found"
                 };
-                // return object as json
-                //var ResponseToReturn = JsonSerializer.Serialize(Response);
-                //await httpContext.Response.WriteAsync(ResponseToReturn);
                 await httpContext.Response.WriteAsJsonAsync(Response);
             }
         }
+
+        private static async Task HandleExceptionAsync(HttpContext httpContext, Exception ex)
+        {
+            //httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            httpContext.Response.StatusCode = ex switch
+            {
+                NotFoundException => StatusCodes.Status404NotFound,
+                _ => StatusCodes.Status500InternalServerError
+            };
+            httpContext.Response.ContentType = "application/json";
+            var Response = new ErrorToReturn
+            {
+                StatusCode = httpContext.Response.StatusCode,
+                ErrorMessage = ex.Message
+            };
+
+            await httpContext.Response.WriteAsJsonAsync(Response);
+        }
+
 
     }
 }
