@@ -19,7 +19,7 @@ namespace Service
              var customerBasket = mapper.Map<BasketDTo, CustomerBasket>(basket);
             var ISCreatedOrUpdated = basketRepository.CreateOrUpdateBasketAsync(customerBasket);
             if (ISCreatedOrUpdated is not null)
-                return await GetBaskitAsync(basket.Id);
+                return await GetBasketAsync(basket.Id);
             else
                 throw new Exception ("Can Not Create Or Update Basket Now , Try Again Later");
         }
@@ -27,7 +27,7 @@ namespace Service
         public async Task<bool> DeleteBasketAsync(string Key) => await basketRepository.DeleteBasketAsync(Key);
 
 
-        public async Task<BasketDTo> GetBaskitAsync(string Key)
+        public async Task<BasketDTo> GetBasketAsync(string Key)
         {
             var basket = await basketRepository.GetBasketAsync(Key);
             if (basket is not null)
