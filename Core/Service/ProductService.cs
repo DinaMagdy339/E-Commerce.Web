@@ -7,6 +7,7 @@ using Service.Specifications;
 
 using System;
 using Shared;
+using DomainLayer.Exceptions;
 namespace Service
 {
     public class ProductService(IUnitOfWork _unitOfWork , IMapper _mapper) : IProductService
@@ -44,7 +45,10 @@ namespace Service
         {
             var Specification = new ProductWithBrandAndTypeSpecification(id);
             var Product =await _unitOfWork.GetRepository<Product, int>().GetByIdAsync(Specification);
-            return _mapper.Map<Product, ProductDTo>(Product);
+            if (Product is null)
+                throw new ProductNotFoundException(id);
+            var PoductDto = _mapper.Map<Product, ProductDTo>(Product);
+            return PoductDto;
         }
     }
 }
