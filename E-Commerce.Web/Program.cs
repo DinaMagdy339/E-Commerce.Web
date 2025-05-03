@@ -1,16 +1,10 @@
 using DomainLayer.Contracts;
-using E_Commerce.Web.CustomMiddleWares;
+using DomainLayer.Models.IdentityModule;
+using Persistence.Identity;
 using E_Commerce.Web.Extentions;
-using E_Commerce.Web.Factories;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Persistence;
-using Persistence.Data;
-using Persistence.Repositories;
 using Service;
-using ServiceAbstraction;
-using Shared.ErrorModels;
-
 namespace E_Commerce.Web
 {
     public class Program
@@ -28,6 +22,7 @@ namespace E_Commerce.Web
             builder.Services.AddInfrastructureServices(builder.Configuration);
             builder.Services.AddApplicationServices();
             builder.Services.AddWebApplicationServices();
+           
 
             #endregion
 

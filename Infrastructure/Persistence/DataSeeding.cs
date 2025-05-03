@@ -1,7 +1,10 @@
 ﻿using DomainLayer.Contracts;
 using DomainLayer.Models;
+using DomainLayer.Models.IdentityModule;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Data;
+using Persistence.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +14,10 @@ using System.Threading.Tasks;
 
 namespace Persistence
 {
-    public class DataSeeding(StoreDbContext _dbContext) : IDataSeeding
+    public class DataSeeding(StoreDbContext _dbContext,
+        UserManager<ApplicationUser> _userManager,
+        RoleManager<IdentityRole> _roleManager,
+        StoreIdentityDbContext _identityDbContext) : IDataSeeding
     {
         public async Task DataSeedAsync()
         {
@@ -58,7 +64,44 @@ namespace Persistence
 
             }
         }
-        
+
+        public async Task IdentityDataSeedAsync()
+        {
+            try
+            {
+                if (!_roleManager.Roles.Any())
+                {
+                    await _roleManager.CreateAsync(new IdentityRole("Admin"));
+                    await _roleManager.CreateAsync(new IdentityRole("SuperAdmin"));
+                }
+                if (!_userManager.Users.Any())
+                {
+                    var User01 = new ApplicationUser()
+                    {
+                        Email = "Mohamed@gmail.com",
+                        DisplayName = "Mohamed Tarek",
+                        PhoneNumber = "01000000000",
+                        UserName = "Mohamed",
+                    };
+                    var User02 = new ApplicationUser()
+                    {
+                        Email = "Salma@gmail.com",
+                        DisplayName = "Salma Mohamed",
+                        PhoneNumber = "01000000000",
+                        UserName = "Salma",
+                    };
+                    await _userManager.CreateAsync(User01, "Password@123");
+                    await _userManager.CreateAsync(User02, "Password@123");
+                    await _userManager.AddToRoleAsync(User01, "Admin");
+                    await _userManager.AddToRoleAsync(User02, "SuperAdmin");
+
+                }
+                await _identityDbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+            }
+        }
     }    
     
 }
